@@ -59,7 +59,7 @@ app.post("/signup", async (req, res) => {
     let newUser = new User({
         username: req.body.user,
         email: req.body.email,
-        password: req.body.pass
+        password: req.body.password
     });
     await newUser.save();
     res.render("user/login");

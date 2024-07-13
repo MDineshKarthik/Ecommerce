@@ -16,6 +16,11 @@ app.get("/signup",(req,res)=>{
     res.render("user/signup")
 })
 
+app.get("/",(req,res)=>{
+    res.render("products/home")
+
+})
+
 
 app.listen(8080,()=>{
     console.log("app is runnig on 8080")

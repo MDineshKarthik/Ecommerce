@@ -1,0 +1,22 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<br>
+<h1 style="text-align:center;">Shopping Cart</h1>
+<br>
+<% if (user.cart.length === 0) { %>
+    <p style="text-align: center; font-size:3rem;">Your cart is empty.</p>
+<% } else { %>
+    <ul>
+        <% let total=0; %>
+        <% user.cart.forEach(product => { %>
+            <li style="display: flex; align-items:center; justify-content:space-evenly;">
+                <img src="<%= product.image %>" style="height:5rem;">
+                <h5> <%=product.name %> - $<%= product.price %></h5>
+                <form action="/remove-from-cart/<%= product._id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+                </form>
+            </li>
+            <% total += product.price %>
+        <% }) %>
+    </ul>
+    <div style="font-size:3rem; display: flex; align-items:center; justify-content:center;">Total Cart value: $<%= Math.round(total) %></div>
+<% } %>

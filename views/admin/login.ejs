@@ -1,0 +1,30 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<br>
+<h3 style="text-align:center ;" >Login as a Admin</h3>
+
+<div class="d-flex justify-content-center mt-5">
+  <div class="bg-secondary-subtle px-2 py-3 rounded">
+    <form action="/admin-login" method="post">
+      <label class="form-label" for="email">Email</label>
+      <input
+      name="email"
+        type="email"
+        id="email"
+        class="form-control"
+        placeholder="email"
+      />
+      <br />
+      <label for="inputPassword" class="form-label">Password</label>
+      <input
+      name="password"
+        type="password"
+        id="inputPassword"
+        placeholder="password"
+        class="form-control"
+        aria-describedby="passwordHelpBlock"
+      />
+      <br />
+      <button type="submit" class="btn ms-auto btn-primary mb-3">Login</button>
+    </form>
+  </div>
+</div>

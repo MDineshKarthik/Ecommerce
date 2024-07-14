@@ -1,0 +1,23 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<h2 class="mt-5 text-center">All Products</h2>
+<br>
+<div style="height: 100vh; width:98vw; display:flex; flex-wrap:wrap; justify-content:center;align-items:center;column-gap:2rem; row-gap:2rem;">
+    <% for(let i =0;i<prods.length;i++){ %>
+        <div class="card" style="width: 18rem;">
+            <img src="<%= prods[i].image %>" style="background-size:cover; height:15rem; width:17rem;" class="card-img-top" alt="this is an img">
+
+              <div class="card-body  bg-secondary-subtle">
+                <h5 class="card-title"><%= prods[i].name %></h5>
+                <p class="card-text">$<%= prods[i].price %></p>
+                <a href="#" class="btn btn-primary">Buy</a> 
+                &nbsp;
+                <form style="display: inline;" action="/add-to-cart/<%= prods[i]._id %>" method="POST">
+                  <input type="hidden" name="userId">
+                  <button class="btn btn-outline-primary" type="submit">Add to Cart</button>
+                </form>
+              </div>
+        </div>
+
+    <% } %>
+</div>

@@ -19,4 +19,11 @@
         <% }) %>
     </ul>
     <div style="font-size:3rem; display: flex; align-items:center; justify-content:center;">Total Cart value: $<%= Math.round(total) %></div>
+    <div style="width: 100vw; height:15vh; display:flex; justify-content:center; align-items:center;">
+        <form action="/place-order" method="post">
+            <button style="font-size: x-large;" class="btn btn-outline-primary">Place Order</button>
+        </form>
+    </div>
+
+
 <% } %>

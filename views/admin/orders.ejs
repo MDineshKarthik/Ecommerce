@@ -1,0 +1,30 @@
+<% layout('/layouts/adminboiler') %>
+
+
+<div style="width: 70vw; display:flex; justify-content:space-between; height:20vh; background-color:aliceblue;">
+    <div style="width:70vw; font-size:2rem;" class="d-flex align-items-center justify-content-center">
+        Add new Product
+    </div>
+</div>
+
+<div style="display:flex; flex-direction: column; justify-content:center; overflow-y: scroll; width: 70vw; height:80vh;">
+    <% orders.forEach(order => { %>
+        <% let x = 0; %>
+        <div style="text-align: center;">
+            <h2>Order ID: <%= order._id %></h2>
+            <p>User: <%= order.user.username %> (<%= order.user.email %>)</p>
+            <p>Order Date: <%= order.orderDate.toDateString() %></p>
+            <h3>Products:</h3>
+            <ol style="">
+                <% order.products.forEach(product => { %>
+                    <% x++; %>
+                    <h6><%= x %>.<%= product.name %> - $<%= product.price %></h6>
+                <% }) %>
+            </ol>
+            <h5>Total Amount: $<%= order.totalAmount %></h5>
+        </div>
+        <div class="my-3" style="font-size: .4px; width: 70vw; background-color:black;">
+            placed
+        </div>
+    <% }) %>
+</div>

@@ -22,6 +22,30 @@ const productSchema = new mongoose.Schema({
     category: String
 });
 
+const orderSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    products: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true
+    }],
+    totalAmount: {
+        type: Number,
+        required: true
+    },
+    orderDate: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+const Order = mongoose.model("Order", orderSchema);
+
+
 const userSchema = new mongoose.Schema({
     username: String,
     email: String,
@@ -29,6 +53,10 @@ const userSchema = new mongoose.Schema({
     cart: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
+    }],
+    orders: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order'
     }]
 });
 
@@ -291,15 +319,55 @@ app.get("/", (req, res) => {
     res.render("products/home");
 });
 
+// Place order route
+app.post("/place-order", isLoggedIn, async (req, res) => {
+    const userId = req.session.userId;
+
+    try {
+        const user = await User.findById(userId).populate('cart');
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+
+        const products = user.cart;
+        const totalAmount = products.reduce((sum, product) => sum + product.price, 0);
+
+        const newOrder = new Order({
+            user: user._id,
+            products: products.map(product => product._id),
+            totalAmount
+        });
+
+        await newOrder.save();
+
+        user.orders.push(newOrder._id);
+         // Empty the cart after placing the order
+        await user.save();
+
+        res.render("user/order", { order: newOrder });
+    } catch (error) {
+        console.error("Error placing order:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+
+
+
+
+
 //admin-routes
 
-app.get("/admin-home",(req,res)=>{
-    res.render("admin/home")
+app.get("/admin-home",isAdminLoggedIn,async(req,res)=>{
+    let products = await Product.find({})
+    res.render("admin/home",{products})
 })
 
 
 
-app.get("/admin-login",(req,res)=>{
+app.get("/admin-login",isAdminLoggedIn,(req,res)=>{
+
     res.render("admin/login")
 })
 app.post("/admin-login",async (req,res)=>{
@@ -342,6 +410,55 @@ app.get("/admin-logout", (req, res) => {
         res.render('admin/login');
     });
 });
+
+app.get('/add-new-prod',isAdminLoggedIn,(req,res)=>{
+    res.render('admin/newprod')
+})
+
+app.post('/add-new-prod',async(req,res)=>{
+    let {name,image,price,category} = req.body
+
+    let newprod = new Product({name,image,price,category})
+
+    await newprod.save()
+
+    res.redirect("/admin-home")
+
+})
+
+app.get('/remove-prod',async(req,res)=>{
+    let products = await Product.find({})
+    res.render('admin/remove',{products})
+})
+
+app.post("/remove-prod/:prodId", async (req, res) => {
+    try {
+        const { prodId } = req.params;
+        
+        const deletedProduct = await Product.findByIdAndDelete(prodId);
+        
+        if (!deletedProduct) {
+            return res.status(404).send("Product not found");
+        }
+        res.redirect("/remove-prod")
+    } catch (error) {
+        console.error("Error removing product:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+// View all orders (Admin only)
+app.get("/admin-orders", isAdminLoggedIn, async (req, res) => {
+    try {
+        const orders = await Order.find({}).populate('user').populate('products');
+        res.render("admin/orders", { orders });
+    } catch (error) {
+        console.error("Error fetching orders:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
 
 
 // Start the server on port 8080

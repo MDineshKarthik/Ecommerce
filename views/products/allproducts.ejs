@@ -10,7 +10,6 @@
               <div class="card-body  bg-secondary-subtle">
                 <h5 class="card-title"><%= prods[i].name %></h5>
                 <p class="card-text">$<%= prods[i].price %></p>
-                <a href="#" class="btn btn-primary">Buy</a> 
                 &nbsp;
                 <form style="display: inline;" action="/add-to-cart/<%= prods[i]._id %>" method="POST">
                   <input type="hidden" name="userId">

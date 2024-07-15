@@ -2,7 +2,7 @@
 
 <div style="width: 70vw; display:flex; justify-content:space-between; height:20vh; background-color:aliceblue;">
     <div style="width:70vw; font-size:2rem;" class="d-flex align-items-center justify-content-center">
-        Products
+        Remove Products
     </div>
 </div>
 <div style="overflow-y: scroll; width: 70vw; height:80vh;">
@@ -10,6 +10,9 @@
         <div style="height:15vh;width:70vw; margin-bottom:1.5rem; display:flex; justify-content:space-around; align-items:center">
             <img src="<%= product.image %>" style="height:5rem;">
             <p><%= product.name %> - $ <%= product.price %></p>
+            <form action="/remove-prod/<%= product._id %>" method="post">
+                <button type="submit" class="btn btn-outline-danger" >Remove</button>
+            </form>
         </div>
         <% }) %>
 </div>

@@ -1,0 +1,46 @@
+<% layout('/layouts/adminboiler') %>
+
+
+<div style="width: 70vw; display:flex; justify-content:space-between; height:20vh; background-color:aliceblue;">
+    <div style="width:70vw; font-size:2rem;" class="d-flex align-items-center justify-content-center">
+        Add new Product
+    </div>
+</div>
+<div style="display:flex; justify-content:center; overflow-y: scroll; width: 70vw; height:80vh;">
+    <form style="width:60vw" action="/add-new-prod" method="post">
+        <label class="form-label" for="email">Name</label>
+      <input
+      name="name"
+        type="text"
+        id="email"
+        class="form-control"
+        placeholder="product name"
+      />
+      <br />
+      <label for="inputPassword" class="form-label">Image URL</label>
+      <input
+      name="image"
+        type="text"
+        id="inputPassword"
+        placeholder="https://img.png"
+        class="form-control"
+        aria-describedby="passwordHelpBlock"
+      />
+      <br />
+      <label class="form-label" for="price">Price </label>
+      <input type="number" name="price" id="price" class="form-control" placeholder="9999.99">
+      <br>
+      <label class="form-label" for="cat">Category</label>
+      <select class="form-control" name="category" id="cat">
+        <option value="laptop">Laptop</option>
+        <option value="mobile">Mobile</option>
+        <option value="tv">Television</option>
+        <option value="watch">Watch</option>
+      </select>
+
+      <br>
+      <button type="submit" class="btn ms-auto btn-primary mb-3">Add Product</button>
+    </form>
+
+    </form>
+</div>
